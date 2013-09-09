@@ -2,7 +2,7 @@ var r = require("rethinkdb");
 var assert = require("assert");
 var _ = require("underscore")._;
 var async = require("async");
-var Table = require("./table");
+var Table = require("./lib/table");
 
 
 var SecondThought = function(){

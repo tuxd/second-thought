@@ -1,4 +1,4 @@
-var db = require("../lib/db");
+var db = require("../index");
 var _ = require("underscore")._;
 var should = require("chai").should();
 
