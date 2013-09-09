@@ -1,0 +1,23 @@
+{
+  "name": "secondthought",
+  "author": "Rob Conery",
+  "description": "A light wrapper for RethinkDB",
+  "version": "0.0.1",
+  "private": false,
+  "scripts": {
+    "test": "NODE_ENV=test mocha -w"
+  },
+  "main" : "./db",
+  "dependencies": {
+    "underscore": "~1.5.1",
+    "rethinkdb": "~1.8.0-0",
+    "async": "~0.2.9"
+  },
+  "devDependencies": {
+    "chai": "~1.7.2",
+    "grunt-mocha-test": "~0.6.3",
+    "grunt": "~0.4.1",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-contrib-jshint": "~0.6.4"
+  }
+}
