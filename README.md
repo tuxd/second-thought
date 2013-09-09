@@ -75,7 +75,7 @@ db.connect({db : "test"}, function(err,db){
 });
 ```
 
-## Basic Usage
+## Basic Queries
 I've tried to keep the API light and simple - with just a bit of sugar to keep the repetetive stuff to a minimum:
 
 ```javascript
