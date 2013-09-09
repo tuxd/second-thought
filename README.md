@@ -15,25 +15,42 @@ So I created it. That's what we have here.
 Install using
 
 ```
-npm install second-thought --save
+npm install secondthought --save
 ```
 
 To use this in your code, just configure what you need:
 
 ```javascript
-var db = require("second-thought").init({db : "test", tables : ['foo', 'bar']});
+var db = require("second-thought");
+db.connect({db : "test"}, function(err,db){
+
+  //you now have access to all of your tables as properties on your db variable:
+  //so, assume there's a table called "foo" in your db...
+  db.foo.save({name : "Mike"}, function(err,saved){
+
+    //output the generated ID
+    console.log(saved.id);
+  });
+
+});
 ```
 
-The `init` method sets the database name as well as drops the tables on the DB prototype as fields. This is interesting for a number of reasons!
-
-Each table that you send into init is a full-blown RethinkDB table, so you can step outisde the abstraction at any point:
+Each table on your DB object is a full-blown RethinkDB table, so you can step outside the abstraction at any point:
 
 ```javascript
-db.connect(function(err,conn){
+db.openConnection(function(err,conn){
 
   //this is a ReQL query
   db.foo.eqJoin('bar_id', db.bar).run(conn, function(err,cursor){
-    //run the joined action
+
+    //run the joined action and do something interesting
+    cursor.toArray(function(err,array){
+      //use the array...
+
+      //be sure to close the connection!
+      conn.close();
+    });
+
   });
 });
 
@@ -43,22 +60,56 @@ In addition you can do all kinds of fun things, like...
 
 ```javascript
 //installation of the DB and tables
-db.install();
+db.connect({db : "test"}, function(err, db){
+  db.install(['foo', 'bar'], function(err,result){
+    //tables should be installed now...
+  });
+});
 
-//querying
-db.query(db.foo, {category : "beer"}, function(err,beers){
+//add a secondary index
+db.connect({db : "test"}, function(err,db){
+
+  db.foo.index("email", function(err, indexed){
+    //indexed == true;
+  });
+});
+```
+
+## Basic Usage
+I've tried to keep the API light and simple - with just a bit of sugar to keep the repetetive stuff to a minimum:
+
+```javascript
+db.foo.query({category : "beer"}, function(err,beers){
   //beers is an array, so have at it
 });
 
-db.first(db.bar, {email : "rob@tekpub.com"}, function(err,rob){
+db.foo.first({email : "rob@tekpub.com"}, function(err,rob){
   //hi Rob
 });
 
-db.exists(db.foo, {name : "bill"}, function(err, exists){
+db.foo.exists({name : "bill"}, function(err, exists){
   //exists will tell you if it's there
 });
 
+db.foo.destroy({id : "some-id"}, function(err,destroyed){
+  //destroyed will be true if something was deleted
+});
+
+db.foo.destroyAll(function(err,destroyed){
+  //destroyed is the count of records whacked
+});
+
+db.foo.updateOnly({name : "Stevie"}, "some-id", function(err,result){
+  //save will do a full swap of the document, updateOnly will partially update
+  //a document so you need to pass the id along
+  //result will be true if an update happened
+});
+
+
 ```
+
+Have a look at the tests to see a bit more
+
 
 ## Wanna Help?
 Just do me a favor and open a PR with some ideas and hopefully a test or two. Thanks!

@@ -108,4 +108,11 @@ describe("Tables", function(){
       done();
     });
   });
+  it("tells me that Mikey exists", function (done) {
+    db.foo.exists({name: "Mikey"}, function (err, result) {
+      result.should.equal(true);
+      done();
+    });
+
+  });
 });
