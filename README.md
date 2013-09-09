@@ -79,32 +79,36 @@ db.connect({db : "test"}, function(err,db){
 I've tried to keep the API light and simple - with just a bit of sugar to keep the repetetive stuff to a minimum:
 
 ```javascript
-db.foo.query({category : "beer"}, function(err,beers){
-  //beers is an array, so have at it
-});
 
-db.foo.first({email : "rob@tekpub.com"}, function(err,rob){
-  //hi Rob
-});
+db.connect({db : "test", function(err,db){
 
-db.foo.exists({name : "bill"}, function(err, exists){
-  //exists will tell you if it's there
-});
+  db.foo.query({category : "beer"}, function(err,beers){
+    //beers is an array, so have at it
+  });
 
-db.foo.destroy({id : "some-id"}, function(err,destroyed){
-  //destroyed will be true if something was deleted
-});
+  db.foo.first({email : "rob@tekpub.com"}, function(err,rob){
+    //hi Rob
+  });
 
-db.foo.destroyAll(function(err,destroyed){
-  //destroyed is the count of records whacked
-});
+  db.foo.exists({name : "bill"}, function(err, exists){
+    //exists will tell you if it's there
+  });
 
-db.foo.updateOnly({name : "Stevie"}, "some-id", function(err,result){
-  //save will do a full swap of the document, updateOnly will partially update
-  //a document so you need to pass the id along
-  //result will be true if an update happened
-});
+  db.foo.destroy({id : "some-id"}, function(err,destroyed){
+    //destroyed will be true if something was deleted
+  });
 
+  db.foo.destroyAll(function(err,destroyed){
+    //destroyed is the count of records whacked
+  });
+
+  db.foo.updateOnly({name : "Stevie"}, "some-id", function(err,result){
+    //save will do a full swap of the document, updateOnly will partially update
+    //a document so you need to pass the id along
+    //result will be true if an update happened
+  });
+
+});
 
 ```
 
